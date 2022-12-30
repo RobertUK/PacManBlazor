@@ -1,17 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width user-scalable=no" />
-    <title>PacMan in Blazor WebAssembly</title>
+    <link rel="canonical" href="https://www.itthings.co.uk/" />
+    <title>PacMan in WebAssembly</title>
+    <meta name="description" content="Some harmless fun when you need a break and the boss isn't looking!" />
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
 </head>
 
-<body id="body" style="background-color: darkorange">
-    <app>Loading...</app>
+<body id="body">
+
+    <app>
+
+        <div id="app" style="margin: 0 auto; width: 100vw; height: 100vh">
+            <div class="text-center py-1">
+                Loading...
+            </div>
+            <!--<div class="text-center mt-3">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                      style="font-size: 16pt; width: 36px; height: 36px; color: purple" />
+            </div>-->
+            <div class="text-center">
+                <img src="/img/loading.gif" class="fit-centre" />
+            </div>
+        </div>
+    </app>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -19,9 +38,10 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
-    <script src="lib/howler.core.js"></script>
-    <script src="lib/hammer.min.js"></script>
+    <script src="lib/howler/howler.core.min.js"></script>
+    <script src="lib/hammer.js/hammer.min.js"></script>
     <script src="sounds.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>

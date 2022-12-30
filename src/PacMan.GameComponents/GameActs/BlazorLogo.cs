@@ -39,7 +39,7 @@ namespace PacMan.GameComponents.GameActs
         public async ValueTask Draw(CanvasWrapper session)
         {
             await session.SetGlobalAlphaAsync(_colorTweener.Position);
-            await session.DrawSprite(_blazorLogo, Spritesheet.Reference);
+            //await session.DrawSprite(_blazorLogo, Spritesheet.Reference);
             await session.SetGlobalAlphaAsync(1f);
         }
     }

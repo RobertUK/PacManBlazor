@@ -242,19 +242,19 @@ namespace PacMan.GameComponents.GameActs
 
                 var timeForEachOne = 600.Milliseconds();
 
-                writeInstructionsForGhost(ref clock, _blinky, Colors.Red, "SHADOW", "BLINKY", pos);
+                writeInstructionsForGhost(ref clock, _blinky, Colors.Red, "Local GP", "Thank u so much!", pos);
 
                 clock += timeForEachOne;
                 pos += gap;
-                writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, "SPEEDY", "PINKY", pos);
+                writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, "Jason", "Jason", pos);
 
                 clock += timeForEachOne;
                 pos += gap;
-                writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, "BASHFUL", "INKY", pos);
+                writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, "Damien", "Damien", pos);
 
                 clock += timeForEachOne;
                 pos += gap;
-                writeInstructionsForGhost(ref clock, _clyde, Colors.Yellow, "POKEY", "CLYDE", pos);
+                writeInstructionsForGhost(ref clock, _clyde, Colors.Yellow, "Sandra", "Bunny", pos);
             }
         }
 
@@ -277,7 +277,7 @@ namespace PacMan.GameComponents.GameActs
                 Where = point
             });
 
-            point += new Vector2(18, -4);
+            point += new Vector2(5, -4);
 
             clock += 1.Seconds();
 
@@ -288,7 +288,7 @@ namespace PacMan.GameComponents.GameActs
                 Color = color
             });
 
-            point += new Vector2(90, 0);
+            point += new Vector2(65, 0);
 
             clock += 500.Milliseconds();
 
