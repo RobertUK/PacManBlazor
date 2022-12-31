@@ -15,5 +15,7 @@ namespace PacMan.GameComponents
         public static Color Yellow => Color.Yellow;
 
         public static Color Orange => Color.Orange;
+
+        public static Color Black => Color.Black;
     }
 }

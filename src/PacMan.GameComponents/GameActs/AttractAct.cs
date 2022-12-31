@@ -84,7 +84,7 @@ namespace PacMan.GameComponents.GameActs
             _input = input;
             _gameSoundPlayer = gameSoundPlayer;
             _pacmanLogo =
-                new(new(192, 25), new(36, 152), Vector2.Zero, new(456, 173));
+                new(new(192, 25+20), new(36, 152+0), Vector2.Zero, new(456, 173+0));
             _blazorLogo = new();
 
             _instructions = new();
@@ -238,19 +238,20 @@ namespace PacMan.GameComponents.GameActs
 
                 var gap = new Vector2(0, 24);
 
-                var pos = new Vector2(16, 30);
+                var pos = new Vector2(10, 30);
 
                 var timeForEachOne = 600.Milliseconds();
 
-                writeInstructionsForGhost(ref clock, _blinky, Colors.Red, "Local GP", "Thank u so much!", pos);
+                writeInstructionsForGhost(ref clock, _blinky, Colors.Red, "Prev.GP", "Toally Incompetent", pos);
+             
+
+                clock += timeForEachOne += 1.Seconds();
+                pos += gap;
+                writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, "Jason", "Jason@TT", pos);
 
                 clock += timeForEachOne;
                 pos += gap;
-                writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, "Jason", "Jason", pos);
-
-                clock += timeForEachOne;
-                pos += gap;
-                writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, "Damien", "Damien", pos);
+                writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, "Damien", "De Belg", pos);
 
                 clock += timeForEachOne;
                 pos += gap;
@@ -288,7 +289,7 @@ namespace PacMan.GameComponents.GameActs
                 Color = color
             });
 
-            point += new Vector2(65, 0);
+            point += new Vector2(67, 0);
 
             clock += 500.Milliseconds();
 

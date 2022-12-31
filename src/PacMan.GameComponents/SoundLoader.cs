@@ -19,8 +19,8 @@ namespace PacMan.GameComponents
                 [SoundName.CoinInserted] =
                     await loadFile(SoundName.CoinInserted, "assets/audio/coin.wav"),
                 [SoundName.CutScene] = await loadFile(SoundName.CutScene, "assets/audio/cutscene.wav"),
-                [SoundName.PacManDying] = await loadFile(SoundName.PacManDying, "assets/audio/dying.wav"),
-                [SoundName.ExtraLife] = await loadFile(SoundName.ExtraLife, "assets/audio/extra_life.wav"),
+                [SoundName.PacManDying] = await loadFile(SoundName.PacManDying, "/assets/audio/dying.wav"),
+                [SoundName.ExtraLife] = await loadFile(SoundName.ExtraLife, "/assets/audio/extra_life.wav"),
                 [SoundName.Frightened] = await loadFile(SoundName.Frightened, "assets/audio/frightened.wav"),
                 [SoundName.FruitEaten] = await loadFile(SoundName.FruitEaten, "assets/audio/fruit_eaten.wav"),
                 [SoundName.GhostEaten] = await loadFile(SoundName.GhostEaten, "assets/audio/ghost_eaten.wav"),

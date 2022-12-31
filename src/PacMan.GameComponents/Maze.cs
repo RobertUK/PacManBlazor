@@ -43,8 +43,8 @@ namespace PacMan.GameComponents
 
         bool _flashing;
 
-        readonly static Size _spritesheetSize = new(225, 248);
-        readonly static Rectangle _mazeRect = new(0, 0, 225, 248);
+        readonly static Size _spritesheetSize = new(235, 248);
+        readonly static Rectangle _mazeRect = new(0, 0, 235, 248);
 
         readonly static Direction[] _directions =
         {

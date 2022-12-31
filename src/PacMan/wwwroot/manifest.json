@@ -1,6 +1,6 @@
 {
-  "name": "BlazorApp8",
-  "short_name": "BlazorApp8",
+  "name": "Pacman",
+  "short_name": "Pacman",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
