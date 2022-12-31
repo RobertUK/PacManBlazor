@@ -6,7 +6,6 @@
 @using PacMan.GameComponents.Audio
 @using System.Diagnostics
 @using System.Diagnostics.CodeAnalysis
-@using System.Threading
 
 @inject IJSRuntime JsRuntime;
 @inject IGame Game;
@@ -20,8 +19,8 @@
     <BECanvas Width="672" Height="944" @ref="_canvasReference"></BECanvas>
 </div>
 <div style="visibility: hidden">
-    <BECanvas Width="234" Height="248" @ref="_player1MazeReference"></BECanvas>
-    <BECanvas Width="234" Height="248" @ref="_player2MazeReference"></BECanvas>
+    <BECanvas Width="224" Height="248" @ref="_player1MazeReference"></BECanvas>
+    <BECanvas Width="224" Height="248" @ref="_player2MazeReference"></BECanvas>
 </div>
 
 @code
@@ -43,7 +42,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-   
         this.ExceptionNotificationService.OnException += handleExceptions;
 
         await Game.Initialise(JsRuntime);
@@ -51,10 +49,11 @@
         await JsRuntime.InvokeAsync<object>("setDrawCallback", DotNetObjectReference.Create(this));
 
         await base.OnInitializedAsync();
-
     }
 
-    void handleExceptions(object _, string s) => Console.WriteLine(s);
+
+    // ReSharper disable once UnusedParameter.Local
+    private void handleExceptions(object sender, string s) => Console.WriteLine(s);
 
 
     async ValueTask<Canvas2DContext> createScaledCanvasContext(BECanvasComponent canvas, bool scale)
@@ -68,7 +67,7 @@
             await context.ScaleAsync(3, 3);
         }
 
-        await context.SetFontAsync("7px Joystix");
+        await context.SetFontAsync("10px Joystix");
 
         return context;
     }
@@ -137,6 +136,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        Console.WriteLine($"OnAfterRenderAsync {firstRender}");
+
         if (firstRender)
         {
             _outputCanvasContext = await createScaledCanvasContext(_canvasReference, true);
