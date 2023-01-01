@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Blazor.Extensions.Canvas.Canvas2D;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Pacman.Shared.Models.Configuration;
 using PacMan.GameComponents.Audio;
 using PacMan.GameComponents.Canvas;
 using PacMan.GameComponents.Events;
@@ -44,6 +46,8 @@ namespace PacMan.GameComponents
 
         static bool _initialised;
 
+        
+
         public Game(
             IMediator mediator,
             IFruit fruit,
@@ -60,10 +64,11 @@ namespace PacMan.GameComponents
             _gameSoundPlayer = gameSoundPlayer;
             _input = input;
             _pacman = pacman;
+            this.Characters = new List<Character>();
         }
 
         [SuppressMessage("ReSharper", "HeapView.ObjectAllocation.Evident")]
-        public async ValueTask Initialise(IJSRuntime jsRuntime)
+        public async ValueTask Initialise(IJSRuntime jsRuntime, List<Character> characters)
         {
             _canvasTimingInformation = new();
 
@@ -75,6 +80,9 @@ namespace PacMan.GameComponents
             // _currentAct = new TornGhostChaseAct(new AttractAct());
 
             // ReSharper disable once HeapView.BoxingAllocation
+
+            //Characters = characters;
+            this.Characters = characters;
             _currentAct = await _mediator.Send(new GetActRequest("AttractAct"));
 
             await _gameSoundPlayer.LoadAll(jsRuntime);
@@ -212,6 +220,11 @@ namespace PacMan.GameComponents
 
         static int _frameCount;
         bool _postRenderInitialised;
+
+   
+
+        public List<Character> Characters { get; set; }
+  
 
         public async ValueTask RunGameLoop(float timestamp)
         {

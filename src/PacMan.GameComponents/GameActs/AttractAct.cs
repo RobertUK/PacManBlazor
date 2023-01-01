@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using MediatR;
@@ -23,6 +24,7 @@ namespace PacMan.GameComponents.GameActs
         readonly IGameSoundPlayer _gameSoundPlayer;
         readonly Marquee _marquee;
         readonly GeneralSprite _pacmanLogo;
+        readonly IGame _game;
 
         struct Instruction
         {
@@ -56,7 +58,8 @@ namespace PacMan.GameComponents.GameActs
             ICoinBox coinBox,
             IMediator mediator,
             IHumanInterfaceParser input,
-            IGameSoundPlayer gameSoundPlayer)
+            IGameSoundPlayer gameSoundPlayer,
+            IGame game)
         {
             MarqueeText[] texts =
             {
@@ -90,7 +93,7 @@ namespace PacMan.GameComponents.GameActs
             _instructions = new();
 
             _startTime = TimeSpan.MinValue;
-
+            _game = game;
             _blinky = new(GhostNickname.Blinky, Direction.Right);
             _pinky = new(GhostNickname.Pinky, Direction.Right);
             _inky = new(GhostNickname.Inky, Direction.Right);
@@ -242,20 +245,56 @@ namespace PacMan.GameComponents.GameActs
 
                 var timeForEachOne = 600.Milliseconds();
 
-                writeInstructionsForGhost(ref clock, _blinky, Colors.Red, "Prev.GP", "Toally Incompetent", pos);
-             
+                var blinky = _game.Characters.Where(x=>x.Id.ToLower()=="blinky").FirstOrDefault();
+                var pinky = _game.Characters.Where(x => x.Id.ToLower() == "pinky").FirstOrDefault();
+                var inky = _game.Characters.Where(x => x.Id.ToLower() == "inky").FirstOrDefault();
+                var clyde = _game.Characters.Where(x => x.Id.ToLower() == "clyde").FirstOrDefault();
 
-                clock += timeForEachOne += 1.Seconds();
-                pos += gap;
-                writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, "Jason", "Jason@TT", pos);
-
+                if (blinky != null)
+                {
+                    writeInstructionsForGhost(ref clock, _blinky, Colors.Red, blinky.Name, blinky.Nickname, pos);
+                    clock += timeForEachOne += 1.Seconds();
+                }
+                else
+                {
+                    writeInstructionsForGhost(ref clock, _blinky, Colors.Red, "SHADOW", "BLINKY", pos);
+                }
                 clock += timeForEachOne;
                 pos += gap;
-                writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, "Damien", "De Belg", pos);
 
+
+                if (pinky != null)
+                {
+                    writeInstructionsForGhost(ref clock, _blinky, Colors.Cyan, pinky.Name, pinky.Nickname, pos);
+                }
+                else
+                {
+                    writeInstructionsForGhost(ref clock, _pinky, Colors.Cyan, "SPEEDY", "PINKY", pos);
+                }
                 clock += timeForEachOne;
                 pos += gap;
-                writeInstructionsForGhost(ref clock, _clyde, Colors.Yellow, "Sandra", "Bunny", pos);
+
+                if (inky != null)
+                {
+                    writeInstructionsForGhost(ref clock, _blinky, Colors.Yellow, inky.Name, inky.Nickname, pos);
+                }
+                else
+                {
+                    writeInstructionsForGhost(ref clock, _inky, Colors.Yellow, "BASHFUL", "INKY", pos);
+                }
+                clock += timeForEachOne;
+                pos += gap;
+
+                if (clyde != null)
+                {
+                    writeInstructionsForGhost(ref clock, _clyde, Colors.Pink, clyde.Name, clyde.Nickname, pos);
+                }
+                else
+                {
+                    writeInstructionsForGhost(ref clock, _clyde, Colors.Pink, "POKEY", "CLYDE", pos);
+                }
+           
+
             }
         }
 

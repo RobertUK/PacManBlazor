@@ -14,7 +14,7 @@ using PacMan.GameComponents.GameActs;
 using PacMan.GameComponents.Ghosts;
 using PacMan.GameComponents.Requests;
 using System.Configuration;
-using Pacman.Models.Configuration;
+using Pacman.Shared.Models.Configuration;
 using System.Net.Http.Json;
 
 namespace PacMan
@@ -32,17 +32,18 @@ namespace PacMan
             builder.RootComponents.Add<App>("app");
             IServiceCollection services = builder.Services;
 
-            builder.Services.AddSingleton(async p =>
-            {
-                var httpClient = p.GetRequiredService<HttpClient>();
-                return await httpClient.GetFromJsonAsync<AppSettings>("appsettings.json")
-                    .ConfigureAwait(false);
-            });
-            var url = builder.Configuration.GetValue<string>("PacManSettings:CanvasHeight");
-            //builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(url) });
-            //ar httpClient =new HttpClient();
-            /// services.Configure<AppSettings>(options => builder.Configuration.GetSection("AppSettings").Bind(options));
-            //var dd = httpClient.GetFromJsonAsync<AppSettings>("settings.json");
+            //BlogifierConfiguration exchangeOptfions = new BlogifierConfiguration(); ;
+
+            //builder.Configuration.GetSection("Blogifier").Bind(exchangeOptfions);
+
+            //AppConfig exchangeOptfions2 = new AppConfig();
+            //builder.Configuration.GetSection("Pacman").Bind(exchangeOptfions);
+
+            //AppConfig exchangeOptfions211 = new AppConfig();
+            //builder.Configuration.GetSection("AppConfig").Bind(exchangeOptfions211);
+
+            services.Configure<AppConfig>(options => builder.Configuration.GetSection("AppConfig").Bind(options));
+
             services.AddSingleton<IGame, Game>();
             services.AddSingleton<IGameStorage, GameStorage>();
             services.AddSingleton<IHumanInterfaceParser, HumanInterfaceParser>();
@@ -107,6 +108,11 @@ namespace PacMan
                     c.AsSingleton(),
                 thisAssembly,
                 componentsAssembly);
+
+            //builder.Services.AddHttpClient<IPacMan, EmployeeService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            //});
 
             services.AddSingleton(new HttpClient {BaseAddress = new(builder.HostEnvironment.BaseAddress)});
 

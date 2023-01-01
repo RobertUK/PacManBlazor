@@ -1,6 +1,8 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using System.Threading.Tasks;
 using PacMan.GameComponents.Canvas;
+using Pacman.Shared.Models.Configuration;
 
 namespace PacMan.GameComponents
 {
@@ -9,6 +11,8 @@ namespace PacMan.GameComponents
         bool Visible { get; set; }
 
         Tile Tile { get; }
+
+       
 
         Direction Direction { get; }
 

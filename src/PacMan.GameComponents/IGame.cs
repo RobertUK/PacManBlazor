@@ -1,17 +1,21 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using PacMan.GameComponents.GameActs;
 using PacMan.GameComponents.Ghosts;
+using Pacman.Shared.Models.Configuration;
 
 namespace PacMan.GameComponents
 {
     public interface IGame
     {
-        ValueTask Initialise(IJSRuntime jsRuntime);
+        ValueTask Initialise(IJSRuntime jsRuntime, List<Character> characters);
 
         ValueTask FruitEaten(int points);
+
+        public List<Character> Characters { get; set; }
 
         ValueTask RunGameLoop(float timestamp);
 
