@@ -201,9 +201,10 @@ namespace PacMan.GameComponents.GameActs
             await _pacMan.Draw(session);
 
             var gp = _ghosts[0].Position;
-
-            await session.DrawText("STEVE DUNN 2020", new((int)gp.X + 2, (int)(gp.Y + 22)), Color.Black);
-            await session.DrawText("STEVE DUNN 2020", new((int)gp.X, (int)(gp.Y + 20)), Color.Yellow);
+            await session.DrawText("HAPPY NEW YEAR 2023!!", new((int)gp.X + 2, (int)(gp.Y + 22)), Color.Black);
+            await session.DrawText("HAPPY NEW YEAR 2023!!", new((int)gp.X, (int)(gp.Y + 20)), Color.Yellow);
+            //await session.DrawText("STEVE DUNN 2020", new((int)gp.X + 2, (int)(gp.Y + 22)), Color.Black);
+            //await session.DrawText("STEVE DUNN 2020", new((int)gp.X, (int)(gp.Y + 20)), Color.Yellow);
         }
 
         void ghostEaten(AttractGhost ghost)
