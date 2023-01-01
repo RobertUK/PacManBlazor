@@ -2,15 +2,20 @@
 
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PacMan.GameComponents;
 using PacMan.GameComponents.Audio;
 using PacMan.GameComponents.GameActs;
 using PacMan.GameComponents.Ghosts;
 using PacMan.GameComponents.Requests;
+using System.Configuration;
+using Pacman.Models.Configuration;
+using System.Net.Http.Json;
 
 namespace PacMan
 {
@@ -20,10 +25,24 @@ namespace PacMan
         {
 
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
 
+           // builder.Configuration.AddJsonFile("/appsettings.json");
+
+
+            builder.RootComponents.Add<App>("app");
             IServiceCollection services = builder.Services;
 
+            builder.Services.AddSingleton(async p =>
+            {
+                var httpClient = p.GetRequiredService<HttpClient>();
+                return await httpClient.GetFromJsonAsync<AppSettings>("appsettings.json")
+                    .ConfigureAwait(false);
+            });
+            var url = builder.Configuration.GetValue<string>("PacManSettings:CanvasHeight");
+            //builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(url) });
+            //ar httpClient =new HttpClient();
+            /// services.Configure<AppSettings>(options => builder.Configuration.GetSection("AppSettings").Bind(options));
+            //var dd = httpClient.GetFromJsonAsync<AppSettings>("settings.json");
             services.AddSingleton<IGame, Game>();
             services.AddSingleton<IGameStorage, GameStorage>();
             services.AddSingleton<IHumanInterfaceParser, HumanInterfaceParser>();

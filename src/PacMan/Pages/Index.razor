@@ -6,12 +6,29 @@
 @using PacMan.GameComponents.Audio
 @using System.Diagnostics
 @using System.Diagnostics.CodeAnalysis
+@using Pacman.Models.Configuration;
+@using Microsoft.Extensions.DependencyInjection.Extensions;
+@using Microsoft.Extensions.Options;
+@using System.Net.Http.Json;
 
 @inject IJSRuntime JsRuntime;
 @inject IGame Game;
 @inject IGameSoundPlayer GameSoundPlayer;
 @inject IHumanInterfaceParser HumanInterfaceParser;
 @inject IExceptionNotificationService ExceptionNotificationService 
+@inject IConfiguration Configuration
+@inject IOptions<AppSettings> AppSettings
+@inject Task<AppSettings> getsettingsTask
+@inject HttpClient client
+
+@*    @code {
+    private async Task CallApi()
+    {
+        var settings = await getsettingsTask();
+        var response = await client.GetFromJsonAsync<SomeResult>(settings.ApiUrl);
+    }
+}*@
+
 
 <img @ref="SpritesheetReference" hidden src="assets/spritesheet.png" />
 
@@ -19,8 +36,8 @@
     <BECanvas Width="672" Height="944" @ref="_canvasReference"></BECanvas>
 </div>
 <div style="visibility: hidden">
-    <BECanvas Width="234" Height="314" @ref="_player1MazeReference"></BECanvas>
-    <BECanvas Width="234" Height="314" @ref="_player2MazeReference"></BECanvas>
+    <BECanvas Width="AppSettings.Value.CanvasWidth" Height="AppSettings.Value.CanvasHeight" @ref="_player1MazeReference"></BECanvas>
+    <BECanvas Width="AppSettings.Value.CanvasWidth" Height="AppSettings.Value.CanvasHeight" @ref="_player2MazeReference"></BECanvas>
 </div>
 
 @code
@@ -60,6 +77,9 @@
     {
         var context = await canvas.CreateCanvas2DAsync();
 
+        var x = Configuration;
+        var llx = AppSettings;
+
         await context.SetTextBaselineAsync(TextBaseline.Top);
 
         if (scale)
@@ -67,7 +87,11 @@
             await context.ScaleAsync(3, 3);
         }
 
-        await context.SetFontAsync("7px Joystix");
+        var fontSize = AppSettings.Value.FontSize;
+        var font = "Joystix";
+
+        await context.SetFontAsync(string.Format("{0}px {1}", fontSize, font));
+        //"7px Joystix");
 
         return context;
     }
