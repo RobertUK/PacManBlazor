@@ -28,7 +28,7 @@ namespace PacMan.GameComponents
                 [SoundName.Munch1] = await loadFile(SoundName.Munch1, "assets/audio/munch1.wav"),
                 [SoundName.Munch2] = await loadFile(SoundName.Munch2, "assets/audio/munch2.wav"),
                 [SoundName.PlayerStart] = await loadFile(SoundName.PlayerStart, "assets/audio/player_start.wav"),
-                [SoundName.Siren1] = await loadFile(SoundName.Siren1, "assets/audio/siren1.wav"),
+                [SoundName.Siren1] = await loadFile(SoundName.Siren1, "assets/audio/siren1British.wav"),
                 [SoundName.Siren2] = await loadFile(SoundName.Siren2, "assets/audio/siren2.wav"),
                 [SoundName.Siren3] = await loadFile(SoundName.Siren3, "assets/audio/siren3.wav"),
                 [SoundName.Siren4] = await loadFile(SoundName.Siren4, "assets/audio/siren4.wav"),

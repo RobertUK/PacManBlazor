@@ -47,10 +47,10 @@ self.externalAssets = [
         "url": "/"
     },
 ];
-
+self.sk
 self.caseInsensitiveUrl = true;
 
 self.serverHandledUrls = [/\/api\//];
 self.serverRenderedUrls = [/\/privacy$/];
 
-self.importScripts('_content/Bit.Bswup/bit-bswup.sw.js', log = "verbose");
+self.importScripts('_content/Bit.Bswup/bit-bswup.sw.js');
