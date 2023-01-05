@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width user-scalable=no" />
     <link rel="canonical" href="https://www.itthings.co.uk/" />
     <title>PacMan in WebAssembly</title>
@@ -12,11 +11,78 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <style>
+        #bit-bswup {
+            position: fixed;
+            background: #fff;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            padding: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .bit-bswup-container {
+            width: 70%;
+            margin: 0 auto;
+            margin-top: 45px;
+        }
+
+        .bit-bswup-title,
+        #bit-bswup-percent {
+            font-size: 20px;
+        }
+
+        .bit-bswup-description {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .bit-bswup-progress {
+            border: 1px solid #ebebff;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            width: 100%;
+            height: 21px;
+        }
+
+        #bit-bswup-progress-bar {
+            background-color: #538fc3;
+            border-radius: 2px;
+            height: 19px;
+        }
+
+        #bit-bswup-reload {
+            display: none;
+            margin-bottom: 8px;
+        }
+
+        #bit-bswup-assets {
+            font-size: 10px;
+            overflow: auto;
+            height: 666px;
+            text-align: left;
+        }
+    </style>
 </head>
 
-<body id="body">
+<body>
 
-    <app>
+    <!--<app>-->
+        <div id="bit-bswup">
+            <div class="bit-bswup-container">
+                <p class="bit-bswup-title">New version is available</p>
+                <p class="bit-bswup-description">Downloading updates, please wait...</p>
+                <div class="bit-bswup-progress">
+                    <div id="bit-bswup-progress-bar" style="width: 0%"></div>
+                </div>
+                <p id="bit-bswup-percent">0 %</p>
+                <button id="bit-bswup-reload">Reload</button>
+                <ul id="bit-bswup-assets"></ul>
+            </div>
+        </div>
 
         <div id="app" style="margin: 0 auto; width: 100vw; height: 100vh">
             <h2>Loading...</h2>
@@ -31,195 +97,189 @@
                 <img src="/img/loading2.gif" class="fit-centre" />
             </div>
         </div>
-    </app>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+        <!--</app>-->
 
-    <script src="_content/Bit.Bswup/bit-bswup.js"
-            scope="/"
-            log="verbose"
-            sw="service-worker.js"
-            handler="bitBswupHandler"></script>
+     
 
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
-    <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
-    <script src="lib/howler/howler.core.min.js"></script>
-    <script src="lib/hammer.js/hammer.min.js"></script>
-    <script src="sounds.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+        <script>
+            var app = document.getElementById('app');
+            var progressEl = document.getElementById('bit-bswup');
+            var progressBar = document.getElementById('bit-bswup-progress-bar');
+            var percentLabel = document.getElementById('bit-bswup-percent');
+            var reloadButton = document.getElementById('bit-bswup-reload');
+            var assetsUl = document.getElementById('bit-bswup-assets');
 
-    <script>
-
-        function bitBswupHandler(type, data) {
-            switch (type) {
-                case 'updatefound':
-                    return console.log('new version is downloading...');
-                case 'statechange':
-                    return console.log('new version state has changed to:', data.currentTarget.state);
-                case 'controllerchange':
-                    return console.log('sw controller changed:', data);
-                case 'installing':
-                    return console.log('installing new version:', data.version);
-                case 'installed':
-                    console.log('new version installed:', data.version)
-                    data.reload();
-                    return;
-                case 'progress':
-                    return console.log('asset downloaded:', data);
-                case 'activate':
-                    return console.log('new version activated:', data.version);
+            function bitBswupHandler(type, data) {
+                switch (type) {
+                    case 'updatefound':
+                        return console.log('new version is downloading...');
+                    case 'statechange':
+                        return console.log('new version state has changed to:', data.currentTarget.state);
+                    case 'controllerchange':
+                        return console.log('sw controller changed:', data);
+                    case 'installing':
+                        app.style.display = 'none';
+                        progressEl.style.display = 'block';
+                        return console.log('installing new version:', data.version);
+                    case 'installed':
+                        reloadButton.style.display = 'block';
+                        console.log('new version installed:', data.version)
+                         data.reload();
+                        reloadButton.onclick = data.reload;
+                        return;
+                    case 'progress':
+                        const li = document.createElement('li');
+                        li.innerHTML = `${data.index}: <b>${data.asset.url}</b>: ${data.asset.hash}`
+                        assetsUl.prepend(li);
+                        const percent = Math.round(data.percent);
+                        progressBar.style.width = `${percent}%`;
+                        percentLabel.innerHTML = `${percent} %`;
+                        return console.log('asset downloaded:', data);
+                    case 'activate':
+                        return console.log('new version activated:', data.version);
+                }
             }
-        }
+        </script>
 
-        //function StartBlazor() {
-        //    let loadedCount = 0;
-        //    const resourcesToLoad = [];
-        //    Blazor.start({
-        //        loadBootResource:
-        //            function (type, filename, defaultUri, integrity) {
-        //                if (type == "dotnetjs")
-        //                    return defaultUri;
+        <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
+        <script src="lib/howler/howler.core.min.js"></script>
+        <script src="lib/hammer.js/hammer.min.js"></script>
+        <script src="sounds.js"></script>
 
-        //                const fetchResources = fetch(defaultUri, {
-        //                    cache: 'no-cache',
-        //                    integrity: integrity,
-        //                    headers: { 'MyCustomHeader': 'My custom value' }
-        //                });
+        <script src="_framework/blazor.webassembly.js" autostart=false></script>
+        <script src="_content/Bit.Bswup/bit-bswup.js"
+                scope="/"
+                log="verbose"
+                sw="service-worker.js"
+                handler="bitBswupHandler"></script>
 
-        //                resourcesToLoad.push(fetchResources);
 
-        //                fetchResources.then((r) => {
-        //                    loadedCount += 1;
-        //                    if (filename == "blazor.boot.json")
-        //                        return;
-        //                    const totalCount = resourcesToLoad.length;
-        //                    const percentLoaded = 10 + parseInt((loadedCount * 90.0) / totalCount);
-        //                    const progressbar = document.getElementById('progressbar');
-        //                    progressbar.style.width = percentLoaded + '%';
-        //                    const progressLabel = document.getElementById('progressLabel');
-        //                    progressLabel.innerText = `Downloading ${loadedCount}/${totalCount}: ${filename}`;
-        //                });
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
 
-        //                return fetchResources;
-        //            }
-        //    });
-       // }
+        <script>
 
-       // StartBlazor();
+            window.onInitialMono = async (module) => {
+                var allResourcesBeingLoaded = await module.GetResourcesBeingLoadedAsync(); // Promise<LoadingResource>
+                var l = allResourcesBeingLoaded.length;
+                allResourcesBeingLoaded.forEach((element) => {
+                    element.response.then((resp) => {
+                        i++;
+                        console.log(100 * i / l);
+                        app.innerHTML = "Loading : " + (100 * i / l) + "%";
+                    });
+                });
+            };
 
-        WebFont.load({
-            custom: {
-                families: ['Joystix']
-            }
-        });
-
-        function init() {
-            var e = document.getElementById('theCanvas');
-
-            e.imageSmoothingEnabled = false;
-            // Start the first frame request
-            window.requestAnimationFrame(gameLoop);
-
-        }
-
-        window.inspect = (instance) => {
-            var e = document.getElementById('spritesheet');
-            console.info(e);
-        }
-
-        window.setDrawCallback = (instance) => {
-            console.info("IN SETDRAWCALLBACK");
-
-            window.theInstance = instance;
-
-            window.addEventListener("resize", resizeGame);
-            resizeGame();
-
-            var e = document.getElementById('theCanvas');
-
-            var mc = new Hammer(e);
-            mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-            mc.on("panup pandown panleft panright tap press", function (ev) {
-                window.theInstance.invokeMethodAsync('OnGesture', ev.type);
-                console.info(ev.type + " gesture detected.");
+            WebFont.load({
+                custom: {
+                    families: ['Joystix']
+                }
             });
 
-            window.onkeydown = e => {
-                console.info(e);
-                return window.theInstance.invokeMethodAsync('KeyDown', e.keyCode);
-            };
+            function init() {
+                var e = document.getElementById('theCanvas');
 
-            window.onkeyup = e => {
-                console.info(e);
-                return window.theInstance.invokeMethodAsync('KeyUp', e.keyCode);
-            };
+                e.imageSmoothingEnabled = false;
+                // Start the first frame request
+                window.requestAnimationFrame(gameLoop);
 
-            window.requestAnimationFrame(gameLoop);
-        }
-
-        function gameLoop(timeStamp) {
-            window.requestAnimationFrame(gameLoop);
-            theInstance.invokeMethodAsync('CSharpGameLoop', timeStamp);
-        }
-
-
-        function resizeGame() {
-            var game = {
-                canvas: document.getElementById("theCanvas"),
-                width: 672,
-                height: 944
             }
 
-            var newGameWidth, newGameHeight;
-
-            // Get the dimensions of the viewport
-            var viewport = {
-                width: window.innerWidth,
-                height: window.innerHeight
-            };
-
-            // Determine game size
-            const ratio = game.height / game.width;
-
-            const viewportRatio = viewport.height / viewport.width;
-
-            if (ratio > viewportRatio) {
-                newGameHeight = viewport.height;
-                newGameWidth = newGameHeight * game.width / game.height;
-            } else {
-                newGameWidth = viewport.width;
-                newGameHeight = newGameWidth * game.height / game.width;
+            window.inspect = (instance) => {
+                var e = document.getElementById('spritesheet');
+                console.info(e);
             }
 
-            game.canvas.style.width = newGameWidth + "px";
-            game.canvas.style.height = newGameHeight + "px";
+            window.setDrawCallback = (instance) => {
+                console.info("IN SETDRAWCALLBACK");
 
-            var paddingX = (viewport.width - newGameWidth) / 2;
-            var paddingY = (viewport.height - newGameHeight) / 2;
+                window.theInstance = instance;
 
-            var margin = paddingY + "px " + paddingX + "px";
+                window.addEventListener("resize", resizeGame);
+                resizeGame();
 
-            // Set the new margin of the game so it will be centered
-            game.canvas.style.margin = margin;
-        };
+                var e = document.getElementById('theCanvas');
 
-    </script>
+                var mc = new Hammer(e);
+                mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+                mc.on("panup pandown panleft panright tap press", function (ev) {
+                    window.theInstance.invokeMethodAsync('OnGesture', ev.type);
+                    console.info(ev.type + " gesture detected.");
+                });
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JWY7TV4FD"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+                window.onkeydown = e => {
+                    console.info(e);
+                    return window.theInstance.invokeMethodAsync('KeyDown', e.keyCode);
+                };
 
-        gtag('config', 'G-0JWY7TV4FD');
-    </script>
+                window.onkeyup = e => {
+                    console.info(e);
+                    return window.theInstance.invokeMethodAsync('KeyUp', e.keyCode);
+                };
+
+                window.requestAnimationFrame(gameLoop);
+            }
+
+            function gameLoop(timeStamp) {
+                window.requestAnimationFrame(gameLoop);
+                theInstance.invokeMethodAsync('CSharpGameLoop', timeStamp);
+            }
+
+
+            function resizeGame() {
+                var game = {
+                    canvas: document.getElementById("theCanvas"),
+                    width: 672,
+                    height: 944
+                }
+
+                var newGameWidth, newGameHeight;
+
+                // Get the dimensions of the viewport
+                var viewport = {
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+
+                // Determine game size
+                const ratio = game.height / game.width;
+
+                const viewportRatio = viewport.height / viewport.width;
+
+                if (ratio > viewportRatio) {
+                    newGameHeight = viewport.height;
+                    newGameWidth = newGameHeight * game.width / game.height;
+                } else {
+                    newGameWidth = viewport.width;
+                    newGameHeight = newGameWidth * game.height / game.width;
+                }
+
+                game.canvas.style.width = newGameWidth + "px";
+                game.canvas.style.height = newGameHeight + "px";
+
+                var paddingX = (viewport.width - newGameWidth) / 2;
+                var paddingY = (viewport.height - newGameHeight) / 2;
+
+                var margin = paddingY + "px " + paddingX + "px";
+
+                // Set the new margin of the game so it will be centered
+                game.canvas.style.margin = margin;
+            };
+
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JWY7TV4FD"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'G-0JWY7TV4FD');
+
+        </script>
 </body>
 
 </html>
