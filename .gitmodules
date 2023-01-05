@@ -1,0 +1,3 @@
+[submodule "src/Bit.Bswup"]
+	path = src/Bit.Bswup
+	url = https://github.com/RobertUK/Bit.Bswup
