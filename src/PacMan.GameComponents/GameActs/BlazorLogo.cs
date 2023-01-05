@@ -13,8 +13,8 @@ namespace PacMan.GameComponents.GameActs
         public BlazorLogo()
         {
             _blazorLogo = new(
-                new(90, 85),
-                new(64, 60),
+                new(60, 85),
+                new(82, 60),
                 Vector2.Zero,
                 new(547, 160));
 
@@ -39,7 +39,7 @@ namespace PacMan.GameComponents.GameActs
         public async ValueTask Draw(CanvasWrapper session)
         {
             await session.SetGlobalAlphaAsync(_colorTweener.Position);
-            //await session.DrawSprite(_blazorLogo, Spritesheet.Reference);
+            await session.DrawSprite(_blazorLogo, Spritesheet.Reference);
             await session.SetGlobalAlphaAsync(1f);
         }
     }

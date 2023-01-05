@@ -16,6 +16,7 @@
 		<FileVersion>1.1</FileVersion>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Bit.Bswup" Version="4.8.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.1" PrivateAssets="all" />
 

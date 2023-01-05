@@ -232,7 +232,8 @@ namespace PacMan.GameComponents.GameActs
             {
                 TimeSpan clock = 1500.Milliseconds();
 
-                _instructions.Add(new() {
+                _instructions.Add(new()
+                {
                     When = clock,
                     Where = new(32, 12),
                     Text = "CHARACTER / NICKNAME",
@@ -245,7 +246,7 @@ namespace PacMan.GameComponents.GameActs
 
                 var timeForEachOne = 600.Milliseconds();
 
-                var blinky = _game.Characters.Where(x=>x.Id.ToLower()=="blinky").FirstOrDefault();
+                var blinky = _game.Characters.Where(x => x.Id.ToLower() == "blinky").FirstOrDefault();
                 var pinky = _game.Characters.Where(x => x.Id.ToLower() == "pinky").FirstOrDefault();
                 var inky = _game.Characters.Where(x => x.Id.ToLower() == "inky").FirstOrDefault();
                 var clyde = _game.Characters.Where(x => x.Id.ToLower() == "clyde").FirstOrDefault();
@@ -253,7 +254,7 @@ namespace PacMan.GameComponents.GameActs
                 if (blinky != null)
                 {
                     writeInstructionsForGhost(ref clock, _blinky, Colors.Red, blinky.Name, blinky.Nickname, pos);
-                    clock += timeForEachOne += 1.Seconds();
+                    //clock += timeForEachOne += 1.Seconds();
                 }
                 else
                 {
@@ -265,36 +266,34 @@ namespace PacMan.GameComponents.GameActs
 
                 if (pinky != null)
                 {
-                    writeInstructionsForGhost(ref clock, _blinky, Colors.Cyan, pinky.Name, pinky.Nickname, pos);
+                    writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, pinky.Name, pinky.Nickname, pos);
                 }
                 else
                 {
-                    writeInstructionsForGhost(ref clock, _pinky, Colors.Cyan, "SPEEDY", "PINKY", pos);
+                    writeInstructionsForGhost(ref clock, _pinky, Colors.Pink, "SPEEDY", "PINKY", pos);
                 }
                 clock += timeForEachOne;
                 pos += gap;
 
                 if (inky != null)
                 {
-                    writeInstructionsForGhost(ref clock, _blinky, Colors.Yellow, inky.Name, inky.Nickname, pos);
+                    writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, inky.Name, inky.Nickname, pos);
                 }
                 else
                 {
-                    writeInstructionsForGhost(ref clock, _inky, Colors.Yellow, "BASHFUL", "INKY", pos);
+                    writeInstructionsForGhost(ref clock, _inky, Colors.Cyan, "BASHFUL", "INKY", pos);
                 }
                 clock += timeForEachOne;
                 pos += gap;
 
                 if (clyde != null)
                 {
-                    writeInstructionsForGhost(ref clock, _clyde, Colors.Pink, clyde.Name, clyde.Nickname, pos);
+                    writeInstructionsForGhost(ref clock, _clyde, Colors.Yellow, clyde.Name, clyde.Nickname, pos);
                 }
                 else
                 {
-                    writeInstructionsForGhost(ref clock, _clyde, Colors.Pink, "POKEY", "CLYDE", pos);
+                    writeInstructionsForGhost(ref clock, _clyde, Colors.Yellow, "POKEY", "CLYDE", pos);
                 }
-           
-
             }
         }
 
@@ -304,14 +303,15 @@ namespace PacMan.GameComponents.GameActs
         }
 
         void writeInstructionsForGhost(
-            ref TimeSpan clock,
-            SimpleGhost ghost,
-            Color color,
-            string name,
-            string nickname,
-            Vector2 point)
+           ref TimeSpan clock,
+           SimpleGhost ghost,
+           Color color,
+           string name,
+           string nickname,
+           Vector2 point)
         {
-            _instructions.Add(new() {
+            _instructions.Add(new()
+            {
                 Ghost = ghost,
                 When = clock,
                 Where = point
@@ -321,7 +321,8 @@ namespace PacMan.GameComponents.GameActs
 
             clock += 1.Seconds();
 
-            _instructions.Add(new() {
+            _instructions.Add(new()
+            {
                 Where = point,
                 Text = $@" - {name}",
                 When = clock,
@@ -332,7 +333,8 @@ namespace PacMan.GameComponents.GameActs
 
             clock += 500.Milliseconds();
 
-            _instructions.Add(new() {
+            _instructions.Add(new()
+            {
                 Where = point,
                 Text = $@"""{nickname}""",
                 When = clock,
